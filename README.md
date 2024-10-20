@@ -1,4 +1,4 @@
-# Rule Engine with AST and Weather Monitoring System
+# Rule Engine with AST
 
 This repository contains one application as part of the Zeotap Intern Assignment:
 - Rule Engine with AST
