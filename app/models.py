@@ -27,5 +27,15 @@ class Rule(BaseModel):
     version: int
     active: bool
 
-    class Config:
-        allow_population_by_field_name = True
+class Config:
+    allow_population_by_field_name = True
+
+class ValidAttribute(str, Enum):
+    AGE = "age"
+    DEPARTMENT = "department"
+    SALARY = "salary"
+    EXPERIENCE = "experience"
+    SPEND = "spend"
+    INCOME = "income"
+
+VALID_ATTRIBUTES = set(item.value for item in ValidAttribute)

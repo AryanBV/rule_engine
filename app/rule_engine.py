@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import List
 import re
 from enum import Enum
+from app.models import VALID_ATTRIBUTES
 
 class NodeType(Enum):
     OPERATOR = "operator"
@@ -147,9 +148,20 @@ class RuleEvaluator:
                 
         raise ValueError(f"Invalid node type: {node.type}")
 
+def validate_attributes(node: Node):
+    if node.type == NodeType.COMPARISON:
+        if node.field not in VALID_ATTRIBUTES:
+            raise ValueError(f"Invalid attribute: {node.field}")
+    if node.left:
+        validate_attributes(node.left)
+    if node.right:
+        validate_attributes(node.right)
+
 def create_rule(rule_string: str) -> Node:
     parser = RuleParser()
-    return parser.parse(rule_string)
+    ast = parser.parse(rule_string)
+    validate_attributes(ast)
+    return ast
 
 def evaluate_rule(node: Node, data: Dict[str, Any]) -> bool:
     evaluator = RuleEvaluator()

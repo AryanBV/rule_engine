@@ -35,8 +35,10 @@ async def create_new_rule(rule: RuleCreate):
         
         return created_rule
         
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/rules/", response_model=List[Rule])
 async def get_rules():
