@@ -109,3 +109,32 @@ async def evaluate_rule_endpoint(rule_id: str, evaluation: RuleEvaluation):
         
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@router.delete("/rules/{rule_id}", response_model=dict)
+async def delete_rule(rule_id: str):
+    try:
+        # Attempt to delete the rule
+        result = rules_collection.delete_one({"_id": ObjectId(rule_id)})
+        
+        # Check if a rule was actually deleted
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Rule not found")
+        
+        return {"message": "Rule successfully deleted"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@router.post("/rules/combine", response_model=str)
+async def combine_rules_endpoint(rule_ids: List[str]):
+    try:
+        # Fetch rules from database
+        rules = [rules_collection.find_one({"_id": ObjectId(rule_id)}) for rule_id in rule_ids]
+        rule_strings = [rule["rule_string"] for rule in rules if rule]
+        
+        # Combine rules
+        combined_ast = combine_rules(rule_strings)
+        
+        # You might want to store this combined rule or return it directly
+        return str(combined_ast)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

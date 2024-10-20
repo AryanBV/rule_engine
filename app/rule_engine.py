@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional, Union
 from dataclasses import dataclass
+from typing import List
 import re
 from enum import Enum
 
@@ -107,7 +108,7 @@ class RuleParser:
             operator=ComparisonOperator(operator),
             value=value
         )
-
+    
 class RuleEvaluator:
     def evaluate(self, node: Node, data: Dict[str, Any]) -> bool:
         if node.type == NodeType.OPERATOR:
@@ -154,6 +155,19 @@ def evaluate_rule(node: Node, data: Dict[str, Any]) -> bool:
     evaluator = RuleEvaluator()
     return evaluator.evaluate(node, data)
 
+def combine_rules(rule_strings: List[str]) -> Node:
+    if not rule_strings:
+        raise ValueError("No rules provided to combine")
+    
+    if len(rule_strings) == 1:
+        return create_rule(rule_strings[0])
+    
+    # Combine rules with AND operator
+    combined_string = "(" + ") AND (".join(rule_strings) + ")"
+    return create_rule(combined_string)
+
+def evaluate_combined_rule(self, node: Node, data: Dict[str, Any]) -> bool:
+    return self.evaluate(node, data)
 
 def test_rule_engine():
     # Test case 1: Single rule evaluation
@@ -185,3 +199,4 @@ def test_rule_engine():
 
 if __name__ == "__main__":
     test_rule_engine()
+
