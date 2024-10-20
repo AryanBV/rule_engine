@@ -4,8 +4,6 @@ This repository contains one application as part of the Zeotap Intern Assignment
 - Rule Engine with AST
 
 
-## Rule Engine with AST
-
 ### Objective
 Develop a simple 3-tier rule engine application (Simple UI, API, and Backend, Data) to determine user eligibility based on attributes like age, department, income, spend, etc. The system uses Abstract Syntax Tree (AST) to represent conditional rules and allows for dynamic creation, combination, and modification of these rules.
 
