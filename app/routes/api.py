@@ -3,11 +3,14 @@ from bson import ObjectId
 from bson.errors import InvalidId
 from datetime import datetime
 from typing import List
-from pydantic import ValidationError
+from pydantic import ValidationError, BaseModel
 
 from ..models import RuleCreate, RuleUpdate, RuleEvaluation, Rule
 from ..database import rules_collection
 from ..rule_engine import create_rule, evaluate_rule, combine_rules
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -104,26 +107,33 @@ async def update_rule(rule_id: str, rule_update: RuleUpdate):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An unexpected error occurred")
 
+class RuleEvaluationRequest(BaseModel):
+    data: dict
+
 @router.post("/rules/evaluate/{rule_id}")
-async def evaluate_rule_endpoint(rule_id: str, evaluation: RuleEvaluation):
+async def evaluate_rule_endpoint(rule_id: str, evaluation: RuleEvaluationRequest):
     try:
-        # Get rule from database
+        logger.debug(f"Evaluating rule {rule_id} with data: {evaluation.data}")
+        
         rule = rules_collection.find_one({"_id": ObjectId(rule_id)})
         if rule is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rule not found")
-            
-        # Create AST from rule string
-        ast = create_rule(rule["rule_string"])
+            logger.debug(f"Rule not found: {rule_id}")
+            raise HTTPException(status_code=404, detail="Rule not found")
         
-        # Evaluate rule
+        logger.debug(f"Retrieved rule: {rule}")
+        
+        ast = create_rule(rule["rule_string"])
         result = evaluate_rule(ast, evaluation.data)
         
+        logger.debug(f"Rule evaluation result: {result}")
         return {"result": result}
         
     except ValueError as ve:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+        logger.debug(f"ValueError in rule evaluation: {str(ve)}")
+        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An unexpected error occurred")
+        logger.error(f"Unexpected error in rule evaluation: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Error evaluating rule: {str(e)}")
 
 @router.delete("/rules/{rule_id}", response_model=dict)
 async def delete_rule(rule_id: str):

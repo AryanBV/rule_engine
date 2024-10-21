@@ -3,6 +3,8 @@ from dataclasses import dataclass
 import re
 from enum import Enum
 from app.models import VALID_ATTRIBUTES
+import logging
+
 
 class NodeType(Enum):
     OPERATOR = "operator"
@@ -138,22 +140,40 @@ class RuleEvaluator:
 
 def validate_attributes(node: Node):
     if node.type == NodeType.COMPARISON:
+        logger.debug(f"Validating attribute: {node.field}")
         if node.field not in VALID_ATTRIBUTES:
+            logger.error(f"Invalid attribute: {node.field}")
             raise ValueError(f"Invalid attribute: {node.field}")
     if node.left:
         validate_attributes(node.left)
     if node.right:
         validate_attributes(node.right)
 
+
+logger = logging.getLogger(__name__)
+
 def create_rule(rule_string: str) -> Node:
+    logger.debug(f"Creating rule from string: {rule_string}")
     parser = RuleParser()
-    ast = parser.parse(rule_string)
-    validate_attributes(ast)
-    return ast
+    try:
+        ast = parser.parse(rule_string)
+        validate_attributes(ast)
+        logger.debug(f"Rule created successfully: {ast}")
+        return ast
+    except Exception as e:
+        logger.error(f"Error creating rule: {str(e)}")
+        raise
 
 def evaluate_rule(node: Node, data: Dict[str, Any]) -> bool:
+    logger.debug(f"Evaluating rule with data: {data}")
     evaluator = RuleEvaluator()
-    return evaluator.evaluate(node, data)
+    try:
+        result = evaluator.evaluate(node, data)
+        logger.debug(f"Rule evaluation result: {result}")
+        return result
+    except Exception as e:
+        logger.error(f"Error evaluating rule: {str(e)}")
+        raise
 
 def combine_rules(rule_strings: List[str]) -> Node:
     if not rule_strings:

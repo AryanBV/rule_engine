@@ -126,20 +126,27 @@
             const ruleId = document.getElementById('ruleSelect').value;
             const jsonData = document.getElementById('jsonData').value;
             try {
+                console.log('Sending data:', JSON.stringify({data: JSON.parse(jsonData)}));
                 const response = await fetch(`${API_URL}/rules/evaluate/${ruleId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: jsonData
+                    body: JSON.stringify({data: JSON.parse(jsonData)})
                 });
-                const result = await response.json();
+                console.log('Response status:', response.status);
+                const responseText = await response.text();
+                console.log('Response text:', responseText);
+                if (!response.ok) {
+                    throw new Error(responseText || 'Error evaluating rule');
+                }
+                const result = JSON.parse(responseText);
                 document.getElementById('evaluationResult').textContent = `Result: ${result.result}`;
             } catch (error) {
-                alert('Error evaluating rule: ' + error.message);
+                console.error('Error:', error);
+                document.getElementById('evaluationResult').textContent = `Error: ${error.message}`;
             }
         });
 
-        // Initial load of rules
-        getRules();
+        
     </script>
 </body>
 </html>
