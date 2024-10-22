@@ -29,7 +29,7 @@ app.add_middleware(
 app.include_router(api.router, prefix="/api")
 
 # Mount the static directory
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/api")
 async def root():

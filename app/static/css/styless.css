@@ -1,0 +1,250 @@
+/* Tab styles */
+.tab-active {
+    border-bottom: 2px solid #3b82f6;
+    color: #3b82f6;
+}
+
+.tab-content {
+    display: none !important;
+}
+
+.tab-content.active {
+    display: block !important;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #3b82f6;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Base styles */
+pre {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    width: 100%;
+}
+
+button {
+    transition: background-color 0.2s;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.text-left {
+    text-align: left;
+}
+
+/* Rule container styles */
+.rule-container {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+}
+
+.rule-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rule-container pre {
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* JSON textarea styles */
+.json-textarea {
+    width: 100%;
+    min-height: 500px; 
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+textarea {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    resize: none;
+    height: auto;
+    min-height: 96px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+/* Rule text styles */
+.rule-text {
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 8px 0;
+    overflow-x: auto;
+}
+
+/* Evaluate button styles */
+.evaluate-button {
+    margin-top: 8px;
+    padding: 8px 16px;
+    background-color: #10b981;
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.evaluate-button:hover {
+    background-color: #059669;
+}
+
+/* Result message styles */
+.result-message {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.result-success {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+/* Monospace font styles */
+.font-mono pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    line-height: 1.4;
+    tab-size: 2;
+}
+
+pre.whitespace-pre {
+    white-space: pre !important;
+    overflow-x: auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+/* JSON actions styles */
+.json-actions {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: flex;
+    gap: 4px;
+}
+
+.json-actions button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background-color: #f3f4f6;
+    transition: background-color 0.2s ease;
+}
+
+.json-actions button:hover {
+    background-color: #e5e7eb;
+}
+
+.bg-emerald-500 {
+    background-color: #10b981;
+}
+
+.bg-emerald-500:hover {
+    background-color: #059669;
+}
+
+.bg-red-100 {
+    background-color: #fee2e2;
+}
+
+.bg-green-100 {
+    background-color: #dcfce7;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+}
+
+.border {
+    border: 1px solid #e5e7eb;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.rounded-md {
+    border-radius: 0.375rem;
+}
+
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+
+.break-words {
+    word-wrap: break-word;
+}
+
+/* Add these new styles for better spacing */
+.space-y-6 > * + * {
+    margin-top: 1.5rem;
+}
+
+.space-y-4 > * + * {
+    margin-top: 1rem;
+}
+
+/* Combined Rule container styles */
+.combined-rule {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    overflow-x: auto; /* Ensure content does not overflow horizontally */
+    white-space: pre-wrap; /* Allow long text to wrap properly */
+}
+
+/* Combined Rule Button - Remove this styling */
+.combined-rule .evaluate-button {
+    display: none; /* Ensure the Evaluate button is hidden */
+}
+
+/* Combined Rule Button - Add this styling */
+.combined-rule .evaluate-button {
+    display: block; /* Ensure the Evaluate button is displayed */
+    margin-top: 16px; /* Add margin to the top of the button */
+}
+
+/* cobimed rule textarea no overflowing outside the box */
+.combined-rule textarea {
+    overflow: hidden;
+    resize: none;
+}
