@@ -3,13 +3,13 @@
 A sophisticated rule engine using Abstract Syntax Tree (AST) for complex business rule evaluation. This project is developed as part of the Zeotap Intern Assignment, featuring a modern web interface for rule management and evaluation.
 
 ## 📋 Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Setup](#setup)
-- [Usage](#usage)
-- [API](#api)
-- [Progress](#progress)
+- [Overview](##overview)
+- [Features](##features)
+- [Architecture](##architecture)
+- [Setup](##setup)
+- [Usage](##usage)
+- [API](##api)
+- [Progress](##progress)
 
 ## 🎯 Overview
 
@@ -28,12 +28,24 @@ A modern 3-tier application that enables:
 - ✅ MongoDB data persistence
 - ✅ Modern React UI
 
+### Enhanced Features
+- ✅ Visual Rule Builder with interactive components
+- ✅ Real-time rule validation
+- ✅ Performance analytics and metrics
+- ✅ Rule templates system
+- ✅ Advanced error handling with detailed feedback
+
 ### Technical Features
 - ✅ AST implementation
 - ✅ Efficient rule traversal
 - ✅ RESTful API design
 - ✅ Error handling
 - ✅ Input validation
+- ✅ Component-based architecture
+- ✅ Modular code structure
+- ✅ Real-time validation service
+- ✅ Analytics tracking
+- ✅ Advanced UI components
 
 ## 🏗️ Architecture
 
@@ -48,11 +60,47 @@ class Node:
     value: Any       # Comparison value
 ```
 
+### Project Structure
+```
+rule_engine/
+├── app/
+│   ├── services/
+│   │   ├── rule_validation.py
+│   │   └── rule_analytics.py
+│   ├── static/
+│   │   ├── css/
+│   │   └── js/
+│   │       └── components/
+│   │           ├── core/
+│   │           │   ├── RuleEngineUI.jsx
+│   │           │   └── RuleBuilder.jsx
+│   │           ├── shared/
+│   │           │   ├── AlertMessage.jsx
+│   │           │   └── LoadingSpinner.jsx
+│   │           └── tabs/
+│   │               ├── CreateTab.jsx
+│   │               ├── ManageTab.jsx
+│   │               ├── EvaluateTab.jsx
+│   │               └── CombineTab.jsx
+│   ├── routes/
+│   │   └── api.py
+│   ├── main.py
+│   ├── database.py
+│   └── rule_engine.py
+├── tests/
+│   ├── test_api.py
+│   ├── test_rule_engine.py
+│   └── test_rule_validation.py
+├── requirements.txt
+└── README.md
+```
+
 ## 🛠️ Technology Stack
-- **Frontend:** React, Tailwind CSS
+- **Frontend:** React, Tailwind CSS, Lucide Icons
 - **Backend:** FastAPI, Python 3.7+
 - **Database:** MongoDB
 - **Validation:** Pydantic
+- **Testing:** Pytest
 
 ## 🚀 Setup
 
@@ -107,10 +155,10 @@ age > 30 AND department = 'Sales'
 ### Data Evaluation Example
 ```json
 {
-    "age": 35,
-    "department": "Marketing",
-    "salary": 25000,
-    "experience": 7
+  "age": 35,
+  "department": "Sales",
+  "salary": 75000,
+  "experience": 7
 }
 ```
 
@@ -129,24 +177,8 @@ DELETE /api/rules/{rule_id}           # Delete rule
 ```http
 POST   /api/rules/evaluate/{rule_id}  # Evaluate rule
 POST   /api/rules/combine             # Combine rules
-```
-
-## 📁 Project Structure
-```
-rule_engine/
-├── app/
-│   ├── static/
-│   │   ├── css/
-│   │   └── js/
-│   │       └── components/
-│   ├── routes/
-│   │   └── api.py
-│   ├── main.py
-│   ├── database.py
-│   └── rule_engine.py
-├── tests/
-├── requirements.txt
-└── README.md
+POST   /api/rules/validate            # Validate rule syntax
+GET    /api/rules/{rule_id}/analytics # Get rule analytics
 ```
 
 ## 🧪 Testing
@@ -163,6 +195,11 @@ pytest
 - ✅ MongoDB integration
 - ✅ CRUD operations
 - ✅ Modern UI
+- ✅ Enhanced validation
+- ✅ Visual rule builder
+- ✅ Performance analytics
+- ✅ Component architecture
+- ✅ Real-time feedback
 
 ### In Development
 - 🔄 Enhanced error handling
@@ -187,14 +224,9 @@ pytest
 4. Push to branch
 5. Submit pull request
 
-## 🧪 Tests
-Run test suite:
-```bash
-pytest
-```
-
 ### Test Coverage
 - Unit tests
 - API tests
 - Integration tests
-
+- Validation tests
+- Component tests
