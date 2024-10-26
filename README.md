@@ -1,111 +1,200 @@
-# Rule Engine with AST
+# Rule Engine with AST Implementation
 
-This repository contains a Rule Engine application with Abstract Syntax Tree (AST) implementation, developed as part of the Zeotap Intern Assignment.
+A sophisticated rule engine using Abstract Syntax Tree (AST) for complex business rule evaluation. This project is developed as part of the Zeotap Intern Assignment, featuring a modern web interface for rule management and evaluation.
 
-## Objective
+## 📋 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Setup](#setup)
+- [Usage](#usage)
+- [API](#api)
+- [Progress](#progress)
 
-Develop a simple 3-tier rule engine application (Simple UI, API, and Backend, Data) to determine user eligibility based on attributes like age, department, income, spend, etc. The system uses Abstract Syntax Tree (AST) to represent conditional rules and allows for dynamic creation, combination, and modification of these rules.
+## 🎯 Overview
 
-## Features
+A modern 3-tier application that enables:
+- Complex rule creation and evaluation
+- Dynamic rule combinations
+- Real-time data assessment
+- Easy rule management through web interface
 
-- Create, read, update, and delete rules
-- Evaluate data against stored rules
-- Combine multiple rules into a single AST
-- RESTful API for rule management and evaluation
-- MongoDB for rule storage
-- Simple web-based UI for interaction
+## ✨ Features Implemented
 
-## API Endpoints
+### Core Features
+- ✅ Dynamic rule creation and modification
+- ✅ Real-time rule evaluation
+- ✅ Rule combination using AST
+- ✅ MongoDB data persistence
+- ✅ Modern React UI
 
-- `POST /api/rules/`: Create a new rule
-- `GET /api/rules/`: List all rules
-- `GET /api/rules/{rule_id}`: Get a specific rule
-- `PUT /api/rules/{rule_id}`: Update a rule
-- `DELETE /api/rules/{rule_id}`: Delete a rule
-- `POST /api/rules/evaluate/{rule_id}`: Evaluate data against a rule
-- `POST /api/rules/combine`: Combine multiple rules into a single rule
+### Technical Features
+- ✅ AST implementation
+- ✅ Efficient rule traversal
+- ✅ RESTful API design
+- ✅ Error handling
+- ✅ Input validation
 
-## Data Structure
+## 🏗️ Architecture
 
-The AST is represented using a `Node` class with the following fields:
-- `type`: String indicating the node type ("operator" for AND/OR, "comparison" for conditions)
-- `left`: Reference to another `Node` (left child)
-- `right`: Reference to another `Node` (right child for operators)
-- `field`: String representing the field name for comparison nodes
-- `operator`: String representing the comparison operator
-- `value`: Value for comparison nodes
-
-## Setup and Running
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/AryanBV/rule_engine.git
-   cd rule_engine
-   ```
-
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-
-3. Set up MongoDB:
-   - Install and start MongoDB on your system
-   - Update the connection string in the `.env` file:
-     ```
-     MONGODB_URL=mongodb://localhost:27017/rule_engine
-     ```
-
-4. Run the FastAPI server:
-   ```
-   uvicorn app.main:app --reload
-   ```
-
-5. Access the application:
-   - Rule Engine UI: `http://localhost:8000`
-   - API documentation: `http://localhost:8000/docs`
-
-## Usage
-
-1. Open the UI at `http://localhost:8000`
-2. Create new rules using the provided form
-3. View existing rules in the list
-4. Select a rule and enter JSON data to evaluate it
-
-Example rule:
+### AST Structure
+```python
+class Node:
+    type: str        # "operator" or "comparison"
+    left: Node       # Left child node
+    right: Node      # Right child for operators
+    field: str       # Field name for comparisons
+    operator: str    # Comparison operator
+    value: Any       # Comparison value
 ```
+
+## 🛠️ Technology Stack
+- **Frontend:** React, Tailwind CSS
+- **Backend:** FastAPI, Python 3.7+
+- **Database:** MongoDB
+- **Validation:** Pydantic
+
+## 🚀 Setup
+
+### Prerequisites
+```bash
+- Python 3.7+
+- MongoDB
+- Node.js and npm
+```
+
+### Installation
+
+1. Clone repository:
+```bash
+git clone https://github.com/AryanBV/rule_engine.git
+cd rule_engine
+```
+
+2. Create virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Configure MongoDB:
+```bash
+# Create .env file with:
+MONGODB_URL=mongodb://localhost:27017/rule_engine
+```
+
+5. Start server:
+```bash
+uvicorn app.main:app --reload
+```
+
+## 📖 Usage
+
+### Rule Creation Example
+```python
+# Simple Rule
+age > 30 AND department = 'Sales'
+
+# Complex Rule
 ((age > 30 AND department = 'Marketing')) AND (salary > 20000 OR experience > 5)
 ```
 
-Example JSON data for evaluation:
+### Data Evaluation Example
 ```json
-{"age": 35, "department": "Marketing", "salary": 25000, "experience": 7}
+{
+    "age": 35,
+    "department": "Marketing",
+    "salary": 25000,
+    "experience": 7
+}
 ```
 
-## Dependencies
+## 📡 API Reference
 
-- Python 3.7+
-- FastAPI
-- MongoDB
-- Pydantic
-
-## Testing
-
-To run the unit tests:
+### Rule Management
+```http
+POST   /api/rules/                    # Create rule
+GET    /api/rules/                    # List rules
+GET    /api/rules/{rule_id}           # Get rule
+PUT    /api/rules/{rule_id}           # Update rule
+DELETE /api/rules/{rule_id}           # Delete rule
 ```
+
+### Rule Operations
+```http
+POST   /api/rules/evaluate/{rule_id}  # Evaluate rule
+POST   /api/rules/combine             # Combine rules
+```
+
+## 📁 Project Structure
+```
+rule_engine/
+├── app/
+│   ├── static/
+│   │   ├── css/
+│   │   └── js/
+│   │       └── components/
+│   ├── routes/
+│   │   └── api.py
+│   ├── main.py
+│   ├── database.py
+│   └── rule_engine.py
+├── tests/
+├── requirements.txt
+└── README.md
+```
+
+## 🧪 Testing
+Run tests:
+```bash
 pytest
 ```
 
-## Design Choices and Non-Functional Considerations
+## 📈 Current Progress
 
-- Used FastAPI for high performance and easy API documentation
-- Implemented efficient AST traversal for rule evaluation
-- Added basic error handling and input validation
-- [Any additional design choices or optimizations]
+### Completed
+- ✅ Core engine implementation
+- ✅ AST evaluation logic
+- ✅ MongoDB integration
+- ✅ CRUD operations
+- ✅ Modern UI
 
-## Future Improvements
+### In Development
+- 🔄 Enhanced error handling
+- 🔄 UI/UX improvements
+- 🔄 Performance optimizations
 
-- Add support for user-defined functions in rules
-- Enhance rule combination strategies
-- Implement more sophisticated data analysis and visualization for rule evaluation
-- Add user authentication and authorization
+### Planned
+- 📋 User authentication
+- 📋 Rule versioning
+- 📋 Advanced visualizations
+- 📋 Batch evaluations
+
+## 📚 Documentation
+- API Docs: `http://localhost:8000/docs`
+- Components: `app/static/js/components/`
+- Core Logic: `app/rule_engine.py`
+
+## 🤝 Contributing
+1. Fork repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Submit pull request
+
+## 🧪 Tests
+Run test suite:
+```bash
+pytest
+```
+
+### Test Coverage
+- Unit tests
+- API tests
+- Integration tests
 

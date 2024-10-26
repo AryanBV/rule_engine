@@ -247,7 +247,7 @@ const RuleEngineUI = () => {
                                 value={newRule.rule_string}
                                 onChange={(e) => setNewRule({...newRule, rule_string: e.target.value})}
                                 rows="3"
-                                placeholder="Example: (age > 30 AND department = 'Sales') OR experience > 5"
+                                placeholder="Example: (age > 35 AND department = 'Sales') OR experience > 5"
                                 required
                             />
                         </div>
