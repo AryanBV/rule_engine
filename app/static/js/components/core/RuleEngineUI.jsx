@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import EvaluateTab from '../tabs/EvaluateTab';
 import AlertMessage from '../shared/AlertMessage';
+import { mockRules } from '../mockData';
 
 const RuleEngineUI = () => {
-    const [activeTab, setActiveTab] = useState('evaluate'); // Start with evaluate tab
-    const [rules, setRules] = useState([]);
+    const [activeTab, setActiveTab] = useState('evaluate');
+    const [rules, setRules] = useState(mockRules);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
-    // Initialize with the correct data
     const [evaluationData, setEvaluationData] = useState(JSON.stringify({
         age: 35,
         department: "Sales",
@@ -18,29 +18,11 @@ const RuleEngineUI = () => {
     
     const [evaluationResult, setEvaluationResult] = useState(null);
 
-    // Debug log when evaluationData changes
     useEffect(() => {
         console.log('RuleEngineUI - evaluationData:', evaluationData);
     }, [evaluationData]);
 
-    useEffect(() => {
-        fetchRules();
-    }, []);
-
-    const fetchRules = async () => {
-        try {
-            setLoading(true);
-            const response = await fetch('/api/rules/');
-            if (!response.ok) throw new Error('Failed to fetch rules');
-            const data = await response.json();
-            setRules(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Mock rule evaluation function
     const evaluateRule = async (ruleId) => {
         try {
             setLoading(true);
@@ -50,20 +32,70 @@ const RuleEngineUI = () => {
             } catch (err) {
                 throw new Error('Invalid JSON data');
             }
+
+            // Find the rule
+            const rule = rules.find(r => r._id === ruleId);
+            if (!rule) {
+                throw new Error('Rule not found');
+            }
+
+            // Simple mock evaluation logic
+            const result = mockEvaluateRule(rule.rule_string, dataToEvaluate);
             
-            const response = await fetch(`/api/rules/evaluate/${ruleId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: dataToEvaluate })
-            });
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 500));
             
-            if (!response.ok) throw new Error('Evaluation failed');
-            const result = await response.json();
-            setEvaluationResult({ ruleId, ...result });
+            setEvaluationResult({ ruleId, result });
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Mock rule evaluation logic
+    const mockEvaluateRule = (ruleString, data) => {
+        try {
+            // Parse the rule string
+            if (ruleString.includes('AND')) {
+                const [condition1, condition2] = ruleString.split('AND').map(c => c.trim());
+                return evaluateCondition(condition1, data) && evaluateCondition(condition2, data);
+            } else if (ruleString.includes('OR')) {
+                const [condition1, condition2] = ruleString.split('OR').map(c => c.trim());
+                return evaluateCondition(condition1, data) || evaluateCondition(condition2, data);
+            }
+            return evaluateCondition(ruleString, data);
+        } catch (error) {
+            console.error('Rule evaluation error:', error);
+            return false;
+        }
+    };
+
+    // Helper function to evaluate single conditions
+    const evaluateCondition = (condition, data) => {
+        const matches = condition.match(/([\w]+)\s*([><=!]+)\s*(.+)/);
+        if (!matches) return false;
+        
+        const [_, field, operator, value] = matches;
+        const cleanValue = value.replace(/['"]/g, '');
+        const fieldValue = data[field];
+        const numValue = Number(cleanValue);
+
+        switch (operator) {
+            case '>':
+                return fieldValue > numValue;
+            case '<':
+                return fieldValue < numValue;
+            case '>=':
+                return fieldValue >= numValue;
+            case '<=':
+                return fieldValue <= numValue;
+            case '=':
+                return isNaN(numValue) ? fieldValue === cleanValue : fieldValue === numValue;
+            case '!=':
+                return isNaN(numValue) ? fieldValue !== cleanValue : fieldValue !== numValue;
+            default:
+                return false;
         }
     };
 
@@ -94,7 +126,13 @@ const RuleEngineUI = () => {
             />
 
             {/* Notifications */}
-            {error && <AlertMessage type="error" message={error} />}
+            {error && (
+                <AlertMessage 
+                    type="error" 
+                    message={error} 
+                    onClose={() => setError(null)}
+                />
+            )}
         </div>
     );
 };
