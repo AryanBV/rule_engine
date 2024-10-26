@@ -140,6 +140,10 @@ MONGODB_URL=mongodb://localhost:27017/rule_engine
 ```bash
 uvicorn app.main:app --reload
 ```
+6.Host name:
+``` bash
+http://localhost:8000/static/index.html
+```
 
 ## 📖 Usage
 
